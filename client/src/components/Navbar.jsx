@@ -13,7 +13,7 @@ const Navbar = ({ setShowLogin }) => {
       className={`flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600 border-b border-borderColor relative transition-all ${location.pathname === "/" && "bg-light"}`}
     >
       <Link to="/">
-        <img src={assets.logo} alt="Logo" className="h-8" />
+        <img src={assets.Driviologo1} alt="Logo" className="h-6.5" />
       </Link>
 
       <div

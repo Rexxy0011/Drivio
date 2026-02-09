@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
-import logo1 from "./logo1.svg";
-import Driviologo from "./Driviologo.svg";
+
+import Driviologo1 from "./Driviologo1.svg";
 import gmail_logo from "./gmail_logo.svg";
 import facebook_logo from "./facebook_logo.svg";
 import instagram_logo from "./instagram_logo.svg";
@@ -46,6 +46,10 @@ import camry from "./camry.jpeg";
 import hilux from "./hilux.jpeg";
 import ml from "./ml.jpeg";
 import prado from "./prado.jpeg";
+import test1 from "./test1.jpg";
+import test2 from "./test2.jpg";
+
+import test3 from "./test3.jpg";
 
 export const cityList = ["Lagos", "Abuja", "portharcourt", "Benin"];
 
@@ -92,12 +96,15 @@ export const assets = {
   car_image2,
   car_image3,
   car_image4,
-  logo1,
-  Driviologo,
+
+  Driviologo1,
   camry,
   hilux,
   ml,
   prado,
+  test1,
+  test2,
+  test3,
 };
 
 export const menuLinks = [
