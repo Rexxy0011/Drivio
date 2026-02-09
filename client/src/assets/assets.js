@@ -1,4 +1,6 @@
 import logo from "./logo.svg";
+import logo1 from "./logo1.svg";
+import Driviologo from "./Driviologo.svg";
 import gmail_logo from "./gmail_logo.svg";
 import facebook_logo from "./facebook_logo.svg";
 import instagram_logo from "./instagram_logo.svg";
@@ -40,6 +42,10 @@ import car_image1 from "./car_image1.png";
 import car_image2 from "./car_image2.png";
 import car_image3 from "./car_image3.png";
 import car_image4 from "./car_image4.png";
+import camry from "./camry.jpeg";
+import hilux from "./hilux.jpeg";
+import ml from "./ml.jpeg";
+import prado from "./prado.jpeg";
 
 export const cityList = ["Lagos", "Abuja", "portharcourt", "Benin"];
 
@@ -86,6 +92,12 @@ export const assets = {
   car_image2,
   car_image3,
   car_image4,
+  logo1,
+  Driviologo,
+  camry,
+  hilux,
+  ml,
+  prado,
 };
 
 export const menuLinks = [
@@ -133,16 +145,16 @@ export const dummyCarData = [
   {
     _id: "67ff5bc069c03d4e45f30b77",
     owner: "67fe3467ed8a8fe17d0ba6e2",
-    brand: "BMW",
-    model: "X5",
-    image: car_image1,
-    year: 2006,
+    brand: "Mercedes-benz",
+    model: "Ml350",
+    image: ml,
+    year: 2015,
     category: "SUV",
     seating_capacity: 4,
-    fuel_type: "Hybrid",
-    transmission: "Semi-Automatic",
-    pricePerDay: 300,
-    location: "New York",
+    fuel_type: "diesel",
+    transmission: "4matic",
+    pricePerDay: 150000,
+    location: "Abuja",
     description:
       "The BMW X5 is a mid-size luxury SUV produced by BMW. The X5 made its debut in 1999 as the first SUV ever produced by BMW.",
     isAvaliable: true,
@@ -153,14 +165,14 @@ export const dummyCarData = [
     owner: "67fe3467ed8a8fe17d0ba6e2",
     brand: "Toyota",
     model: "Corolla",
-    image: car_image2,
-    year: 2021,
+    image: camry,
+    year: 2025,
     category: "Sedan",
     seating_capacity: 4,
     fuel_type: "Diesel",
-    transmission: "Manual",
-    pricePerDay: 130,
-    location: "Chicago",
+    transmission: "Automatic",
+    pricePerDay: 210000,
+    location: "lagos",
     description:
       "The Toyota Corolla is a mid-size luxury sedan produced by Toyota. The Corolla made its debut in 2008 as the first sedan ever produced by Toyota.",
     isAvaliable: true,
@@ -169,16 +181,16 @@ export const dummyCarData = [
   {
     _id: "67ff6b9f8f1b3684286a2a68",
     owner: "67fe3467ed8a8fe17d0ba6e2",
-    brand: "Jeep ",
-    model: "Wrangler",
-    image: car_image3,
-    year: 2023,
+    brand: "Toyota ",
+    model: "Prado",
+    image: prado,
+    year: 2024,
     category: "SUV",
     seating_capacity: 4,
-    fuel_type: "Hybrid",
+    fuel_type: "diesel",
     transmission: "Automatic",
-    pricePerDay: 200,
-    location: "Los Angeles",
+    pricePerDay: 200000,
+    location: "Benin",
     description:
       "The Jeep Wrangler is a mid-size luxury SUV produced by Jeep. The Wrangler made its debut in 2003 as the first SUV ever produced by Jeep.",
     isAvaliable: true,
@@ -187,16 +199,16 @@ export const dummyCarData = [
   {
     _id: "68009c93a3f5fc6338ea7e34",
     owner: "67fe3467ed8a8fe17d0ba6e2",
-    brand: "Ford",
-    model: "Neo 6",
-    image: car_image4,
-    year: 2022,
-    category: "Sedan",
-    seating_capacity: 2,
+    brand: "Toyota",
+    model: "Hilux",
+    image: hilux,
+    year: 2025,
+    category: "truck",
+    seating_capacity: 4,
     fuel_type: "Diesel",
-    transmission: "Semi-Automatic",
-    pricePerDay: 209,
-    location: "Houston",
+    transmission: "Automatic",
+    pricePerDay: 400000,
+    location: "portharcourt",
     description:
       "This is a mid-size luxury sedan produced by Toyota. The Corolla made its debut in 2008 as the first sedan ever produced by Toyota.",
     isAvaliable: true,
