@@ -163,7 +163,7 @@ export const dummyCarData = [
     pricePerDay: 150000,
     location: "Abuja",
     description:
-      "The BMW X5 is a mid-size luxury SUV produced by BMW. The X5 made its debut in 1999 as the first SUV ever produced by BMW.",
+      "The Mercedes-Benz ML350 is a luxury SUV known for comfort, smooth handling, and a premium cabin. It’s a solid rental choice for business trips, family outings, and long drives.",
     isAvaliable: true,
     createdAt: "2025-04-16T07:26:56.215Z",
   },
@@ -181,7 +181,7 @@ export const dummyCarData = [
     pricePerDay: 210000,
     location: "lagos",
     description:
-      "The Toyota Corolla is a mid-size luxury sedan produced by Toyota. The Corolla made its debut in 2008 as the first sedan ever produced by Toyota.",
+      "The Toyota Corolla is a reliable, fuel-efficient sedan with a comfortable ride and modern features. A great rental option for daily commuting, errands, and city driving.",
     isAvaliable: true,
     createdAt: "2025-04-16T08:33:57.993Z",
   },
@@ -199,7 +199,7 @@ export const dummyCarData = [
     pricePerDay: 200000,
     location: "Benin",
     description:
-      "The Jeep Wrangler is a mid-size luxury SUV produced by Jeep. The Wrangler made its debut in 2003 as the first SUV ever produced by Jeep.",
+      "The Toyota Prado is a capable SUV built for comfort and durability, with a spacious interior and strong road presence. Ideal for rentals when you want extra space and confidence on the road.",
     isAvaliable: true,
     createdAt: "2025-04-16T08:34:39.592Z",
   },
@@ -217,7 +217,7 @@ export const dummyCarData = [
     pricePerDay: 400000,
     location: "portharcourt",
     description:
-      "This is a mid-size luxury sedan produced by Toyota. The Corolla made its debut in 2008 as the first sedan ever produced by Toyota.",
+      "The Toyota Hilux is a tough, dependable pickup designed for strength and utility, with a comfortable cabin and strong performance. A practical rental choice for work runs, hauling, and long-distance travel.",
     isAvaliable: true,
     createdAt: "2025-04-17T06:15:47.318Z",
   },
