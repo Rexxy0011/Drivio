@@ -105,6 +105,7 @@ export const assets = {
   test1,
   test2,
   test3,
+  user_profile,
 };
 
 export const menuLinks = [
@@ -142,7 +143,7 @@ export const ownerMenuLinks = [
 
 export const dummyUserData = {
   _id: "6847f7cab3d8daecdb517095",
-  name: "GreatStack",
+  name: "Dave",
   email: "admin@example.com",
   role: "owner",
   image: user_profile,
@@ -232,7 +233,7 @@ export const dummyMyBookingsData = [
     pickupDate: "2025-06-13T00:00:00.000Z",
     returnDate: "2025-06-14T00:00:00.000Z",
     status: "confirmed",
-    price: 440,
+    price: 440000,
     createdAt: "2025-06-10T12:57:48.244Z",
   },
   {
@@ -243,7 +244,7 @@ export const dummyMyBookingsData = [
     pickupDate: "2025-06-12T00:00:00.000Z",
     returnDate: "2025-06-12T00:00:00.000Z",
     status: "pending",
-    price: 130,
+    price: 130000,
     createdAt: "2025-06-10T12:57:25.613Z",
   },
   {
@@ -254,7 +255,7 @@ export const dummyMyBookingsData = [
     pickupDate: "2025-06-11T00:00:00.000Z",
     returnDate: "2025-06-12T00:00:00.000Z",
     status: "pending",
-    price: 600,
+    price: 600000,
     createdAt: "2025-06-10T09:55:06.379Z",
   },
   {
@@ -265,7 +266,7 @@ export const dummyMyBookingsData = [
     pickupDate: "2025-06-11T00:00:00.000Z",
     returnDate: "2025-06-12T00:00:00.000Z",
     status: "confirmed",
-    price: 440,
+    price: 440000,
     createdAt: "2025-06-10T09:44:25.410Z",
   },
 ];
