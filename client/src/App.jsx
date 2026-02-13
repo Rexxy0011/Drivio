@@ -12,6 +12,7 @@ import Dashboard from "./Pages/owner/Dashboard";
 import AddCar from "./Pages/owner/AddCar";
 import ManageCars from "./Pages/owner/ManageCars";
 import ManageBookings from "./Pages/owner/ManageBookings";
+import Login from "./components/Login";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -20,6 +21,8 @@ const App = () => {
   return (
     <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
       <>
+        {showLogin && <Login setShowLogin={setShowLogin} />}
+
         {!isOnwerPath && <Navbar setShowLogin={setShowLogin} />}
 
         <Routes>
