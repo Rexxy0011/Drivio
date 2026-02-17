@@ -57,3 +57,14 @@ export const loginUser = async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 };
+
+// Get user data using token (jwt)
+export const getUserData = async (req, res) => {
+  try {
+    const { user } = req;
+    return res.json({ success: true, user });
+  } catch (error) {
+    console.error(error.message);
+    return res.json({ success: false, message: error.message });
+  }
+};
