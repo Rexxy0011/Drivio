@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import imagekit from "../configs/imageKit.js";
+import Booking from "../models/Booking.js";
 import Car from "../models/Car.js";
 import fs from "fs";
 
@@ -116,6 +117,63 @@ export const getDashboardData = async (req, res) => {
     }
 
     const cars = await Car.find({ owner: _id });
+    const bookings = await Booking.find({ owner: _id })
+      .populate("car ")
+      .sort({ createdAt: -1 });
+
+    const pendingBookings = await Booking.find({
+      owner: _id,
+      status: "pending",
+    });
+    const completedBookings = await Booking.find({
+      owner: _id,
+      status: "comfirmed",
+    });
+
+    // calculate monthly revenue
+    const monthlyRevenue = bookings
+      .slice()
+      .fillter((booking) => booking.status === "confirmed")
+      .reduce((acc, booking) => acc + booking.price, 0);
+
+    const dashboardData = {
+      totalCars: cars.length,
+      totalBookings: bookings.length,
+      pendingBookings: pendingBookings.length,
+      completedBookings: completedBookings.length,
+      recentBookings: bookings.slice(0, 3),
+      monthlyRevenue,
+    };
+
+    res.json({ success: true, dashboardData });
+  } catch (error) {
+    console.error(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+// Api to update user image
+
+export const updateUserImage = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    // upload images to imagekit
+    const response = await imagekit.files.upload({
+      file: fs.createReadStream(imageFiles.path),
+      fileName: imageFiles.originalname,
+      folder: "/users",
+    });
+
+    // optimize through imagekit transformation
+    const optimizedImageUrl = imagekit.helper.buildSrc({
+      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+      src: response.filePath,
+      transformation: [{ width: 400, quality: "auto", format: "webp" }],
+    });
+
+    const image = optimizedImageUrl;
+    await User.findByIdAndUpdate({ _id }, { image });
+
+    res.json({ success: true, message: "image Updated" });
   } catch (error) {
     console.error(error.message);
     res.json({ success: false, message: error.message });
