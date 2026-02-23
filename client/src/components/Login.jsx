@@ -1,7 +1,10 @@
 import React from "react";
 import { useState } from "react";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
-const Login = ({ setShowLogin }) => {
+const Login = () => {
+  const { setShowLogin, axios, setToken, navigate } = useAppContext();
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -9,12 +12,31 @@ const Login = ({ setShowLogin }) => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+
+    try {
+      const { data } = await axios.post(`/api/user/${state}`, {
+        name,
+        email,
+        password,
+      });
+
+      if (data.success) {
+        setToken(data.token);
+        localStorage.setItem("token", data.token);
+        setShowLogin(false);
+        navigate("/");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   return (
     <div
       onClick={() => setShowLogin(false)}
-      className="fixed top-0 bottom-0 left-0 right-0 z-100 flex items-center text-sm text-gray-600 bg-black/50"
+      className="fixed top-0 bottom-0 left-0 right-0 z-[100] flex items-center text-sm text-gray-600 bg-black/50"
     >
       <form
         onSubmit={onSubmitHandler}
@@ -25,6 +47,7 @@ const Login = ({ setShowLogin }) => {
           <span className="text-primary">User</span>{" "}
           {state === "login" ? "Login" : "Sign Up"}
         </p>
+
         {state === "register" && (
           <div className="w-full">
             <p>Name</p>
@@ -38,6 +61,7 @@ const Login = ({ setShowLogin }) => {
             />
           </div>
         )}
+
         <div className="w-full ">
           <p>Email</p>
           <input
@@ -49,6 +73,7 @@ const Login = ({ setShowLogin }) => {
             required
           />
         </div>
+
         <div className="w-full ">
           <p>Password</p>
           <input
@@ -60,6 +85,7 @@ const Login = ({ setShowLogin }) => {
             required
           />
         </div>
+
         {state === "register" ? (
           <p>
             Already have account?{" "}
@@ -81,6 +107,7 @@ const Login = ({ setShowLogin }) => {
             </span>
           </p>
         )}
+
         <button className="bg-primary hover:bg-blue-800 transition-all text-white w-full py-2 rounded-md cursor-pointer">
           {state === "register" ? "Create Account" : "Login"}
         </button>
@@ -88,4 +115,5 @@ const Login = ({ setShowLogin }) => {
     </div>
   );
 };
+
 export default Login;
