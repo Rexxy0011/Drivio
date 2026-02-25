@@ -1,11 +1,14 @@
 import React from "react";
 import { useEffect } from "react";
-import { assets, dummyDashboardData } from "../../assets/assets";
+import { assets } from "../../assets/assets";
 import Title from "../../components/owner/Title";
 import { useState } from "react";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
-  const currency = import.meta.env.VITE_CURRENCY;
+  const { axios, isOwner, currency } = useAppContext();
+
   const [data, setData] = useState({
     totalCars: 0,
     totalBookings: 0,
@@ -34,9 +37,25 @@ const Dashboard = () => {
     },
   ];
 
+  const fetchDashboardData = async () => {
+    try {
+      const { data } = await axios.get("/api/owner/dashboard");
+      if (data.success) {
+        setData(data.dashboardData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
-    setData(dummyDashboardData);
-  }, []);
+    if (isOwner) {
+      fetchDashboardData();
+    }
+  }, [isOwner]);
+
   return (
     <div className="px-4 pt-10 md:px-10 flex-1">
       <Title
@@ -59,9 +78,10 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
+
       <div className="flex flex-wrap items-start gap-6 mb-8 w-full">
         {/* recent bookings*/}
-        <div className="p-4 mb:p-6 border border-borderColor rounded-md max-w-lg w-full">
+        <div className="p-4 md:p-6 border border-borderColor rounded-md max-w-lg w-full">
           <h1 className="text-lg font-medium">Recent Bookings</h1>
           <p className="text-gray-500">Latest customer bookings</p>
           {data.recentBookings.map((booking, index) => (
@@ -78,7 +98,7 @@ const Dashboard = () => {
                   <p>
                     {booking.car.brand} {booking.car.model}
                   </p>
-                  <p className="text-sm  text-gray-500">
+                  <p className="text-sm text-gray-500">
                     {booking.createdAt.split("T")[0]}
                   </p>
                 </div>
@@ -95,6 +115,7 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
+
         {/* Monthly revenue */}
         <div className="p-4 md:p-6 mb-6 border border-borderColor rounded-md w-full md:max-w-xs">
           <h1 className="text-lg font-medium">Monthly Revenue</h1>
@@ -108,4 +129,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
 export default Dashboard;

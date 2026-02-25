@@ -133,7 +133,7 @@ export const getDashboardData = async (req, res) => {
     // calculate monthly revenue
     const monthlyRevenue = bookings
       .slice()
-      .fillter((booking) => booking.status === "confirmed")
+      .filter((booking) => booking.status === "confirmed")
       .reduce((acc, booking) => acc + booking.price, 0);
 
     const dashboardData = {
@@ -156,14 +156,14 @@ export const getDashboardData = async (req, res) => {
 export const updateUserImage = async (req, res) => {
   try {
     const { _id } = req.user;
-    // upload images to imagekit
+    const imageFiles = req.file;
+
     const response = await imagekit.files.upload({
       file: fs.createReadStream(imageFiles.path),
       fileName: imageFiles.originalname,
       folder: "/users",
     });
 
-    // optimize through imagekit transformation
     const optimizedImageUrl = imagekit.helper.buildSrc({
       urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
       src: response.filePath,
@@ -171,7 +171,7 @@ export const updateUserImage = async (req, res) => {
     });
 
     const image = optimizedImageUrl;
-    await User.findByIdAndUpdate({ _id }, { image });
+    await User.findByIdAndUpdate(_id, { image });
 
     res.json({ success: true, message: "image Updated" });
   } catch (error) {
