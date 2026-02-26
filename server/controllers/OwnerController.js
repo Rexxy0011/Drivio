@@ -63,7 +63,7 @@ export const toggleCarAvailability = async (req, res) => {
   try {
     const { _id } = req.user;
     const { carId } = req.body;
-    const car = await Car.findById({ carId });
+    const car = await Car.findById(carId);
 
     // checking if the car belongs to the owner
 
@@ -87,7 +87,7 @@ export const deleteCar = async (req, res) => {
   try {
     const { _id } = req.user;
     const { carId } = req.body;
-    const car = await Car.findById({ carId });
+    const car = await Car.findById(carId);
 
     // checking if the car belongs to the owner
 
