@@ -118,7 +118,7 @@ export const getDashboardData = async (req, res) => {
 
     const cars = await Car.find({ owner: _id });
     const bookings = await Booking.find({ owner: _id })
-      .populate("car ")
+      .populate("car")
       .sort({ createdAt: -1 });
 
     const pendingBookings = await Booking.find({
