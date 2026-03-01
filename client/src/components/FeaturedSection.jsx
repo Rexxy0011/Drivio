@@ -4,12 +4,17 @@ import { assets } from "../assets/assets";
 import CarCard from "./CarCard";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import { motion } from "motion/react";
 
 const FeaturedSection = () => {
   const navigate = useNavigate();
   const { cars } = useAppContext();
   return (
-    <div className="flex flex-col items-center py-24 px-6 md:px-16 lg:px-24 xl:px-32">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      className="flex flex-col items-center py-24 px-6 md:px-16 lg:px-24 xl:px-32"
+    >
       <div>
         <Title
           title="Featured Vehicles"
@@ -32,7 +37,7 @@ const FeaturedSection = () => {
       >
         Explore all cars <img src={assets.arrow_icon} alt="" />
       </button>
-    </div>
+    </motion.div>
   );
 };
 export default FeaturedSection;
