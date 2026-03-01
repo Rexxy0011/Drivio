@@ -1,6 +1,7 @@
 import React from "react";
 import Title from "./Title";
 import { assets } from "../assets/assets";
+import { motion } from "framer-motion";
 
 const Testimonial = () => {
   const testimonials = [
@@ -37,39 +38,74 @@ const Testimonial = () => {
     <div className="py-28 px-6 md:px-16 lg:px-24 xl:px-44">
       <Title
         title="What Our Customers Say"
-        subTitle="See why clients  choose Drivio for fast, reliable rentals."
+        subTitle="See why clients choose Drivio for fast, reliable rentals."
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-18">
-        {testimonials.map((testimonial, index) => (
-          <div
-            key={index}
-            className="bg-white p-6 rounded-xl shadow-lg hover:-translate-y-1 transition-all duration-500"
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={{
+          hidden: {},
+          show: { transition: { staggerChildren: 0.2 } },
+        }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-18"
+      >
+        {testimonials.map((testimonial) => (
+          <motion.div
+            key={testimonial.id}
+            variants={{
+              hidden: { opacity: 0, y: 28, scale: 0.98 },
+              show: { opacity: 1, y: 0, scale: 1 },
+            }}
+            whileHover={{ y: -6, rotate: -0.4 }}
+            transition={{ type: "spring", stiffness: 140, damping: 22 }}
+            className="bg-white p-6 rounded-xl shadow-lg"
           >
             <div className="flex items-center gap-3">
-              <img
+              <motion.img
+                initial={{ scale: 0.9, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 140, damping: 22 }}
                 className="w-12 h-12 rounded-full"
                 src={testimonial.image}
                 alt={testimonial.name}
               />
               <div>
-                <p className=" text-xl">{testimonial.name}</p>
+                <p className="text-xl">{testimonial.name}</p>
                 <p className="text-gray-500">{testimonial.location}</p>
               </div>
             </div>
-            <div className="flex items-center gap-1 mt-4">
+
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.35, delay: 0.05 }}
+              className="flex items-center gap-1 mt-4"
+            >
               {Array(5)
                 .fill(0)
                 .map((_, index) => (
-                  <img key={index} src={assets.star_icon} alt="star" />
+                  <motion.img
+                    key={index}
+                    src={assets.star_icon}
+                    alt="star"
+                    initial={{ opacity: 0, y: 6 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.35, delay: index * 0.06 }}
+                  />
                 ))}
-            </div>
+            </motion.div>
+
             <p className="text-gray-500 max-w-90 mt-4 font-light">
               "{testimonial.testimonial}"
             </p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };

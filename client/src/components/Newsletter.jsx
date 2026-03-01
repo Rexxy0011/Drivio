@@ -1,8 +1,15 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const Newsletter = () => {
   return (
-    <div className="flex flex-col items-center justify-center text-center space-y-2 max-md:px-4 my-10 mb-40">
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.45 }}
+      className="flex flex-col items-center justify-center text-center space-y-2 max-md:px-4 my-10 mb-40"
+    >
       <h1 className="md:text-4xl text-2xl font-semibold">Get Deals First.</h1>
       <p className="md:text-md text-gray-500/70 pb-8">
         Join the Drivio list for new listings, limited-time offers, and
@@ -16,14 +23,16 @@ const Newsletter = () => {
           placeholder="Enter your email"
           required
         />
-        <button
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
           type="submit"
           className="md:px-12 px-8 h-full text-white bg-primary hover:bg-primary-dull transition-all cursor-pointer rounded-md rounded-l-none"
         >
           Subscribe
-        </button>
+        </motion.button>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
