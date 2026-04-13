@@ -1,7 +1,7 @@
 import React from "react";
 import Title from "./Title";
 import { assets } from "../assets/assets";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const Testimonial = () => {
   const testimonials = [
@@ -68,7 +68,7 @@ const Testimonial = () => {
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 140, damping: 22 }}
-                className="w-12 h-12 rounded-full"
+                className="w-12 h-12 rounded-full object-cover shrink-0"
                 src={testimonial.image}
                 alt={testimonial.name}
               />
@@ -85,22 +85,20 @@ const Testimonial = () => {
               transition={{ duration: 0.35, delay: 0.05 }}
               className="flex items-center gap-1 mt-4"
             >
-              {Array(5)
-                .fill(0)
-                .map((_, index) => (
-                  <motion.img
-                    key={index}
-                    src={assets.star_icon}
-                    alt="star"
-                    initial={{ opacity: 0, y: 6 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: index * 0.06 }}
-                  />
-                ))}
+              {Array.from({ length: testimonial.rating }, (_, index) => (
+                <motion.img
+                  key={index}
+                  src={assets.star_icon}
+                  alt="star"
+                  initial={{ opacity: 0, y: 6 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: index * 0.06 }}
+                />
+              ))}
             </motion.div>
 
-            <p className="text-gray-500 max-w-90 mt-4 font-light">
+            <p className="text-gray-500 mt-4 font-light">
               "{testimonial.testimonial}"
             </p>
           </motion.div>
