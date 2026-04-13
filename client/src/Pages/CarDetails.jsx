@@ -1,68 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import * as Popover from "@radix-ui/react-popover";
-import { DayPicker } from "react-day-picker";
 import dayjs from "dayjs";
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { assets } from "../assets/assets";
 import Loader from "../components/Loader";
+import DateField, { startOfToday } from "../components/DateField";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
-
-const startOfToday = () => {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  return d;
-};
-
-const DateField = ({ label, value, onChange, minDate, placeholder }) => {
-  const [open, setOpen] = useState(false);
-  const selected = value ? new Date(value) : undefined;
-
-  return (
-    <div className="flex flex-col gap-2">
-      <label className="text-sm text-gray-500">{label}</label>
-      <Popover.Root open={open} onOpenChange={setOpen}>
-        <Popover.Trigger asChild>
-          <button
-            type="button"
-            className="flex items-center justify-between gap-2 border border-borderColor px-3 py-2.5 rounded-lg text-left hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
-          >
-            <span className={selected ? "text-gray-800" : "text-gray-400"}>
-              {selected ? dayjs(selected).format("ddd, MMM D, YYYY") : placeholder}
-            </span>
-            <img src={assets.calendar_icon_colored} alt="" className="h-4 opacity-70" />
-          </button>
-        </Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Content
-            sideOffset={6}
-            align="start"
-            className="z-50 bg-white rounded-xl shadow-xl border border-borderColor p-2 animate-in fade-in zoom-in-95"
-          >
-            <DayPicker
-              mode="single"
-              selected={selected}
-              onSelect={(date) => {
-                if (!date) return;
-                onChange(dayjs(date).format("YYYY-MM-DD"));
-                setOpen(false);
-              }}
-              disabled={minDate ? { before: minDate } : undefined}
-              defaultMonth={selected ?? minDate ?? startOfToday()}
-              showOutsideDays
-            />
-          </Popover.Content>
-        </Popover.Portal>
-      </Popover.Root>
-    </div>
-  );
-};
 
 const CarDetails = () => {
   const { id } = useParams();
   const {
     cars,
     axios,
+    user,
+    setShowLogin,
     pickupDate,
     setPickupDate,
     returnDate,
@@ -72,6 +24,7 @@ const CarDetails = () => {
   const navigate = useNavigate();
   const [car, setCar] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [pendingPayment, setPendingPayment] = useState(null);
 
   const today = useMemo(() => startOfToday(), []);
   const minReturnDate = useMemo(() => {
@@ -92,9 +45,71 @@ const CarDetails = () => {
   const totalPrice = car ? car.pricePerDay * numberOfDays : 0;
   const canBook = pickupDate && returnDate && numberOfDays > 0 && !submitting;
 
+  const flwConfig = {
+    public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
+    tx_ref: pendingPayment?.reference ?? "",
+    amount: pendingPayment?.amount ?? 0,
+    currency: "NGN",
+    payment_options: "card,ussd,banktransfer",
+    customer: {
+      email: user?.email ?? "",
+      name: user?.name ?? "",
+    },
+    customizations: {
+      title: "Drivio",
+      description: car ? `${car.brand} ${car.model} rental` : "Car rental",
+      logo: "",
+    },
+  };
+
+  const handleFlutterPayment = useFlutterwave(flwConfig);
+
+  const verifyOnServer = async (transactionId, reference) => {
+    try {
+      const { data } = await axios.post("/api/payments/verify", {
+        transactionId,
+        reference,
+      });
+      if (data.success) {
+        toast.success("Booking confirmed");
+        navigate("/my-bookings");
+      } else {
+        toast("Payment received — confirmation pending");
+        navigate("/my-bookings");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (!pendingPayment) return;
+    handleFlutterPayment({
+      callback: (response) => {
+        closePaymentModal();
+        if (response.status === "successful" || response.status === "completed") {
+          verifyOnServer(response.transaction_id, response.tx_ref);
+        } else {
+          toast.error("Payment not completed");
+        }
+        setPendingPayment(null);
+      },
+      onClose: () => {
+        toast("Payment cancelled — your hold expires in 15 minutes");
+        setPendingPayment(null);
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingPayment]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!canBook) return;
+    if (!user) {
+      setShowLogin(true);
+      return;
+    }
     setSubmitting(true);
     try {
       const { data } = await axios.post("/api/bookings/create", {
@@ -103,8 +118,7 @@ const CarDetails = () => {
         returnDate,
       });
       if (data.success) {
-        toast.success(data.message);
-        navigate("/my-bookings");
+        setPendingPayment(data.booking);
       } else {
         toast.error(data.message);
       }

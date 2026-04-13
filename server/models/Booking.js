@@ -10,10 +10,14 @@ const bookingSchema = new mongoose.Schema(
     returnDate: { type: Date, required: true },
     status: {
       type: String,
-      enum: ["pending", "confirmed", "cancelled"],
-      default: "pending",
+      enum: ["pending_payment", "pending", "confirmed", "cancelled", "refunded"],
+      default: "pending_payment",
     },
     price: { type: Number, required: true },
+    paymentExpiresAt: { type: Date },
+    paymentReference: { type: String, index: true },
+    flwTransactionId: { type: String },
+    refundId: { type: String },
   },
   { timestamps: true }
 );
