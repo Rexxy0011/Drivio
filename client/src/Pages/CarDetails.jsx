@@ -94,7 +94,7 @@ const CarDetails = () => {
             {/* description */}
             <div>
               <h1 className="text-xl font-medium mb-3">Description</h1>
-              <p className="text-gray-500">{car.desciption}</p>
+              <p className="text-gray-500">{car.description}</p>
             </div>
             {/* features */}
             <div>

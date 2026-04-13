@@ -19,7 +19,7 @@ const AddCar = () => {
     fuel_type: "",
     seating_capacity: 0,
     location: "",
-    desciption: "",
+    description: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +49,7 @@ const AddCar = () => {
           fuel_type: "",
           seating_capacity: 0,
           location: "",
-          desciption: "",
+          description: "",
         });
       } else {
         toast.error(data.message);
@@ -237,8 +237,8 @@ const AddCar = () => {
             placeholder="tell us about your car "
             required
             className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
-            value={car.desciption}
-            onChange={(e) => setCar({ ...car, desciption: e.target.value })}
+            value={car.description}
+            onChange={(e) => setCar({ ...car, description: e.target.value })}
           ></textarea>
         </div>
 

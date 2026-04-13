@@ -110,11 +110,7 @@ export const deleteCar = async (req, res) => {
 
 export const getDashboardData = async (req, res) => {
   try {
-    const { _id, role } = req.user;
-
-    if (role !== "owner") {
-      return res.json({ success: false, message: "Not authorized" });
-    }
+    const { _id } = req.user;
 
     const cars = await Car.find({ owner: _id });
     const bookings = await Booking.find({ owner: _id })
@@ -127,7 +123,7 @@ export const getDashboardData = async (req, res) => {
     });
     const completedBookings = await Booking.find({
       owner: _id,
-      status: "comfirmed",
+      status: "confirmed",
     });
 
     // calculate monthly revenue
