@@ -36,6 +36,9 @@ const MyBookings = () => {
         align="left"
       />
       <div>
+        {bookings.length === 0 && (
+          <p className="text-gray-500 mt-10">You have no bookings yet.</p>
+        )}
         {bookings.map((booking, index) => (
           <div
             key={booking._id}
@@ -43,20 +46,28 @@ const MyBookings = () => {
           >
             {/* car image + info */}
             <div className="md:col-span-1">
-              <div className="rounded-md overflow-hidden mb-3">
-                <img
-                  src={booking.car.image}
-                  alt=""
-                  className="w-full h-auto aspect-video object-cover"
-                />
-              </div>
-              <p className="text-lg font-medium mt-2">
-                {booking.car.brand} {booking.car.model}
-              </p>
-              <p className="text-gray-500">
-                {booking.car.year} • {booking.car.category} •{" "}
-                {booking.car.location}
-              </p>
+              {booking.car ? (
+                <>
+                  <div className="rounded-md overflow-hidden mb-3">
+                    <img
+                      src={booking.car.image}
+                      alt=""
+                      className="w-full h-auto aspect-video object-cover"
+                    />
+                  </div>
+                  <p className="text-lg font-medium mt-2">
+                    {booking.car.brand} {booking.car.model}
+                  </p>
+                  <p className="text-gray-500">
+                    {booking.car.year} • {booking.car.category} •{" "}
+                    {booking.car.location}
+                  </p>
+                </>
+              ) : (
+                <div className="rounded-md bg-light p-6 text-sm text-gray-500">
+                  This listing is no longer available.
+                </div>
+              )}
             </div>
 
             {/* Booking info */}
@@ -99,7 +110,7 @@ const MyBookings = () => {
                 />
                 <div>
                   <p className="text-gray-500">Pick-up location</p>
-                  <p>{booking.car.location}</p>
+                  <p>{booking.car?.location ?? "—"}</p>
                 </div>
               </div>
             </div>
