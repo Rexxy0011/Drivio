@@ -12,10 +12,16 @@ export const protect = async (req, res, next) => {
   const token = auth.startsWith("Bearer ") ? auth.split(" ")[1] : auth;
 
   try {
-    const { userId } = jwt.verify(token, process.env.JWT_SECRET);
-    if (!userId) return unauthorized(res);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findById(userId).select("-password");
+    if (decoded?.isAdmin) {
+      req.user = { _id: "admin", role: "admin" };
+      return next();
+    }
+
+    if (!decoded?.userId) return unauthorized(res);
+
+    const user = await User.findById(decoded.userId).select("-password");
     if (!user) return unauthorized(res);
 
     req.user = user;
@@ -27,6 +33,13 @@ export const protect = async (req, res, next) => {
 
 export const requireOwner = (req, res, next) => {
   if (req.user?.role !== "owner") {
+    return res.status(403).json({ success: false, message: "Not authorized" });
+  }
+  next();
+};
+
+export const requireAdmin = (req, res, next) => {
+  if (req.user?.role !== "admin") {
     return res.status(403).json({ success: false, message: "Not authorized" });
   }
   next();
