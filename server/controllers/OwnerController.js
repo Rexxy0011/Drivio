@@ -15,30 +15,57 @@ export const changeRoleToOwner = async (req, res) => {
   }
 };
 
-// Api to list car
+const uploadToImageKit = async (file, folder, transformation) => {
+  const response = await imagekit.files.upload({
+    file: fs.createReadStream(file.path),
+    fileName: file.originalname,
+    folder,
+  });
+  if (!transformation) return response.url;
+  return imagekit.helper.buildSrc({
+    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+    src: response.filePath,
+    transformation,
+  });
+};
+
+// Api to list car (pending admin approval)
 export const addCar = async (req, res) => {
   try {
     const { _id } = req.user;
-    let car = JSON.parse(req.body.carData);
-    const imageFiles = req.file;
+    const car = JSON.parse(req.body.carData);
 
-    // upload images to imagekit
-    const response = await imagekit.files.upload({
-      file: fs.createReadStream(imageFiles.path),
-      fileName: imageFiles.originalname,
-      folder: "/cars",
+    const imageFile = req.files?.image?.[0];
+    const registrationFile = req.files?.registration?.[0];
+    const insuranceFile = req.files?.insurance?.[0];
+
+    if (!imageFile || !registrationFile || !insuranceFile) {
+      return res.json({
+        success: false,
+        message: "Car image, registration, and insurance are all required",
+      });
+    }
+
+    const [image, registration, insurance] = await Promise.all([
+      uploadToImageKit(imageFile, "/cars", [
+        { width: 1280, quality: "auto", format: "webp" },
+      ]),
+      uploadToImageKit(registrationFile, "/cars/docs"),
+      uploadToImageKit(insuranceFile, "/cars/docs"),
+    ]);
+
+    await Car.create({
+      ...car,
+      image,
+      owner: _id,
+      isApproved: false,
+      documents: { registration, insurance },
     });
 
-    // optimize through imagekit transformation
-    const optimizedImageUrl = imagekit.helper.buildSrc({
-      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
-      src: response.filePath, // path of the uploaded file returned by ImageKit
-      transformation: [{ width: 1280, quality: "auto", format: "webp" }],
+    res.json({
+      success: true,
+      message: "Listing submitted — waiting for admin approval",
     });
-
-    const image = optimizedImageUrl;
-    await Car.create({ ...car, image, owner: _id });
-    res.json({ success: true, message: "Car Added " });
   } catch (error) {
     console.error(error.message);
     res.json({ success: false, message: error.message });
