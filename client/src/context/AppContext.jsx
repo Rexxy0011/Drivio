@@ -56,17 +56,18 @@ export const AppProvider = ({ children }) => {
     toast.success("Logged out successfully");
   };
 
-  // to retrieve the token from local storage
+  // load public listings immediately so guests can browse
   useEffect(() => {
+    fetchCars();
     const Token = localStorage.getItem("token");
     setToken(Token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       fetchUser();
-      fetchCars();
     }
   }, [token]);
 

@@ -1,8 +1,31 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
+import { useAppContext } from "../context/AppContext";
 
 const Banner = () => {
+  const { user, isOwner, setShowLogin, axios, setIsOwner } = useAppContext();
+  const navigate = useNavigate();
+
+  const handleClick = async () => {
+    if (!user) return setShowLogin(true);
+    if (isOwner) return navigate("/owner");
+    try {
+      const { data } = await axios.post("/api/owner/change-role");
+      if (data.success) {
+        setIsOwner(true);
+        toast.success(data.message);
+        navigate("/owner");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -18,11 +41,12 @@ const Banner = () => {
           earn effortlessly, stress-free.
         </p>
         <motion.button
+          onClick={handleClick}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="px-6 py-2 bg-white hover:bg-slate-100 transition-all text-primary rounded-lg text-sm mt-4 cursor-pointer"
         >
-          List your car
+          {isOwner ? "Go to dashboard" : "List your car"}
         </motion.button>
       </div>
 

@@ -77,7 +77,11 @@ const Navbar = () => {
         </div>
         <div className="flex max-sm:flex-col items-start sm:items-center gap-6">
           <button
-            onClick={() => (isOwner ? navigate("/owner") : changeRole())}
+            onClick={() => {
+              if (isOwner) return navigate("/owner");
+              if (!user) return setShowLogin(true);
+              changeRole();
+            }}
             className="cursor-pointer"
           >
             {isOwner ? "Dashboard" : "list cars"}
