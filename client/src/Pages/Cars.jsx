@@ -9,6 +9,7 @@ import { useAppContext } from "../context/AppContext";
 const Cars = () => {
   // getting search params from url
   const [searchParams] = useSearchParams();
+  const pickupCountry = searchParams.get("country");
   const pickupLocation = searchParams.get("pickupLocation");
   const pickupDate = searchParams.get("pickupDate");
   const returnDate = searchParams.get("returnDate");
@@ -19,7 +20,8 @@ const Cars = () => {
   const [baseCars, setBaseCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
 
-  const isSearchData = pickupLocation && pickupDate && returnDate;
+  const isSearchData =
+    (pickupCountry || pickupLocation) && pickupDate && returnDate;
 
   const applyFilter = () => {
     if (input === "") {
@@ -41,6 +43,7 @@ const Cars = () => {
   const searchCarAvailability = async () => {
     try {
       const { data } = await axios.post("/api/bookings/check-availability", {
+        country: pickupCountry,
         location: pickupLocation,
         pickupDate,
         returnDate,

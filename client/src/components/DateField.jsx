@@ -22,13 +22,13 @@ const DateField = ({
   const selected = value ? new Date(value) : undefined;
 
   return (
-    <div className={`flex flex-col gap-2 ${className}`}>
-      {label && <label className="text-sm text-gray-500">{label}</label>}
+    <div className={`flex flex-col gap-1.5 ${className}`}>
+      {label && <label className="text-xs text-gray-500">{label}</label>}
       <Popover.Root open={open} onOpenChange={setOpen}>
         <Popover.Trigger asChild>
           <button
             type="button"
-            className="flex items-center justify-between gap-2 border border-borderColor px-3 py-2.5 rounded-lg text-left hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition min-w-44"
+            className="w-full flex items-center justify-between gap-2 border border-borderColor px-3 py-2.5 rounded-lg text-left hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
           >
             <span className={selected ? "text-gray-800" : "text-gray-400"}>
               {selected ? dayjs(selected).format("ddd, MMM D, YYYY") : placeholder}
