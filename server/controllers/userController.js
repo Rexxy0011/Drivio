@@ -69,10 +69,10 @@ export const getUserData = async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 };
-// get all cars for the front end
+// get all cars for the front end (only approved + available listings)
 export const getCars = async (req, res) => {
   try {
-    const cars = await Car.find({ isAvailable: true });
+    const cars = await Car.find({ isAvailable: true, isApproved: true });
     res.json({ success: true, cars });
   } catch (error) {
     console.error(error.message);

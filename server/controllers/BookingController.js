@@ -31,9 +31,13 @@ const checkAvailability = async (car, pickupDate, returnDate) => {
 // api to check availability of a car for a given date range and location
 export const checkAvailabilityOfCar = async (req, res) => {
   try {
-    const { location, pickupDate, returnDate } = req.body;
+    const { country, location, pickupDate, returnDate } = req.body;
 
-    const cars = await Car.find({ location, isAvailable: true });
+    const query = { isAvailable: true, isApproved: true };
+    if (country) query.country = country;
+    if (location) query.location = location;
+
+    const cars = await Car.find(query);
 
     const availabilityChecks = cars.map(async (car) => {
       const isAvailable = await checkAvailability(
@@ -68,6 +72,14 @@ export const bookCar = async (req, res) => {
     const carData = await Car.findById(car);
     if (!carData) {
       return res.json({ success: false, message: "Car not found" });
+    }
+
+    if (!carData.isApproved) {
+      return res.json({ success: false, message: "This car is not available for booking" });
+    }
+
+    if (carData.owner.toString() === _id.toString()) {
+      return res.json({ success: false, message: "You can't book your own car" });
     }
 
     const pickup = new Date(pickupDate);
