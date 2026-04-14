@@ -26,10 +26,16 @@ export const AppProvider = ({ children }) => {
       if (data.success) {
         setUser(data.user);
         setIsOwner(data.user.role === "owner");
-      } else {
-        navigate("/");
       }
     } catch (error) {
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        localStorage.removeItem("token");
+        setToken(null);
+        setUser(null);
+        setIsOwner(false);
+        axios.defaults.headers.common["Authorization"] = "";
+        return;
+      }
       console.error(error);
       toast.error(error.message);
     }
