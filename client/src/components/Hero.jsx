@@ -1,10 +1,12 @@
-import React, { useMemo, useState } from "react";
+import React, { Suspense, lazy, useMemo, useState } from "react";
 import { assets } from "../assets/assets";
 import { countries, countryList } from "../assets/countries";
 import dayjs from "dayjs";
 import { useAppContext } from "../context/AppContext";
 import { motion } from "motion/react";
 import DateField, { startOfToday } from "./DateField";
+
+const HeroCar3D = lazy(() => import("./HeroCar3D"));
 
 const Hero = () => {
   const [pickupCountry, setPickupCountry] = useState("");
@@ -145,14 +147,20 @@ const Hero = () => {
         </div>
       </motion.form>
 
-      <motion.img
-        initial={{ opacity: 0, y: 100 }}
+      <motion.div
+        initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-        src={assets.main_car}
-        alt=""
-        className="max-h-74"
-      />
+        className="w-full flex justify-center"
+      >
+        <Suspense
+          fallback={
+            <img src={assets.main_car} alt="" className="max-h-74" />
+          }
+        >
+          <HeroCar3D />
+        </Suspense>
+      </motion.div>
     </motion.div>
   );
 };
