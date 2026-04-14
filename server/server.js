@@ -6,6 +6,7 @@ import userRouter from "./routes/userRoutes.js";
 import ownerRouter from "./routes/ownerRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
 import paymentRouter from "./routes/paymentRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 
 // initialize express app
 
@@ -23,6 +24,7 @@ app.use("/api/user", userRouter);
 app.use("/api/owner", ownerRouter);
 app.use("/api/bookings", bookingRouter);
 app.use("/api/payments", paymentRouter);
+app.use("/api/admin", adminRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
