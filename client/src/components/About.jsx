@@ -6,7 +6,7 @@ const values = [
     badge: "01",
     tag: "Trust",
     title: "Verified by default",
-    body: "Every host submits vehicle registration and proof of insurance. Our team reviews each listing before it goes public — the car on your screen is the car at the curb.",
+    body: "Every host submits vehicle registration and proof of insurance. Our team reviews each listing before it goes public, so the car on your screen is the car at the curb.",
     accent: "from-primary/20 via-primary/5",
   },
   {
@@ -20,7 +20,7 @@ const values = [
     badge: "03",
     tag: "Payments",
     title: "Refunds that actually refund",
-    body: "A fifteen-minute hold gives you time to pay through Flutterwave. Cancel or get cancelled on, and the money comes back automatically — not when someone remembers.",
+    body: "A fifteen-minute hold gives you time to pay through Flutterwave. Cancel or get cancelled on, and your refund processes automatically, no waiting on someone to remember.",
     accent: "from-indigo-400/20 via-indigo-400/5",
   },
 ];
@@ -62,7 +62,7 @@ const About = () => {
             Drivio connects travellers and locals with verified vehicle owners
             across six African countries. Whether you need an SUV in Lagos for
             the weekend, a city car in Cairo for a meeting, or something fun in
-            Marrakech — list it, book it, drive it. No dealership counters,
+            Marrakech: list it, book it, drive it. No dealership counters,
             no paperwork pile-ups.
           </p>
         </motion.div>
