@@ -11,13 +11,18 @@ import Dashboard from "./Pages/owner/Dashboard";
 import AddCar from "./Pages/owner/AddCar";
 import ManageCars from "./Pages/owner/ManageCars";
 import ManageBookings from "./Pages/owner/ManageBookings";
+import AdminLogin from "./Pages/AdminLogin";
+import Admin from "./Pages/Admin";
 import Login from "./components/Login";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext";
 
 const App = () => {
   const { showLogin, setShowLogin } = useAppContext();
-  const isOwnerPath = useLocation().pathname.startsWith("/owner");
+  const path = useLocation().pathname;
+  const isOwnerPath = path.startsWith("/owner");
+  const isAdminPath = path.startsWith("/admin");
+  const hideChrome = isOwnerPath || isAdminPath;
 
   return (
     <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
@@ -25,7 +30,7 @@ const App = () => {
 
       {showLogin && <Login setShowLogin={setShowLogin} />}
 
-      {!isOwnerPath && <Navbar setShowLogin={setShowLogin} />}
+      {!hideChrome && <Navbar setShowLogin={setShowLogin} />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -38,9 +43,11 @@ const App = () => {
           <Route path="manage-cars" element={<ManageCars />} />
           <Route path="manage-bookings" element={<ManageBookings />} />
         </Route>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
 
-      {!isOwnerPath && <Footer />}
+      {!hideChrome && <Footer />}
     </div>
   );
 };
