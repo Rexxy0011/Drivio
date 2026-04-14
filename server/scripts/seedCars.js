@@ -91,6 +91,33 @@ const LISTINGS = [
   { country: "Morocco", location: "Fez", brand: "Kia", model: "Rio", year: 2021, category: "Hatchback", transmission: "Automatic", fuel_type: "petrol", seating_capacity: 5, pricePerDay: 45 },
 ];
 
+const CONTACTS = {
+  "Nigeria|Abuja": { phone: "+234 803 123 4567", address: "Plot 24, Adetokunbo Ademola Crescent, Wuse II" },
+  "Nigeria|Lagos": { phone: "+234 802 234 5678", address: "15 Admiralty Way, Lekki Phase 1" },
+  "Nigeria|Benin City": { phone: "+234 805 345 6789", address: "7 Ugbor Road, GRA" },
+  "Nigeria|Port Harcourt": { phone: "+234 806 456 7890", address: "12 Tombia Street, GRA Phase II" },
+  "Ghana|Accra": { phone: "+233 24 111 2233", address: "12 Cantonments Road, Osu" },
+  "Ghana|Kumasi": { phone: "+233 24 222 3344", address: "Harper Road, Adum" },
+  "Ghana|Takoradi": { phone: "+233 24 333 4455", address: "Beach Road, Anaji" },
+  "Ghana|Tamale": { phone: "+233 24 444 5566", address: "Hospital Road, Tamale Central" },
+  "Kenya|Nairobi": { phone: "+254 712 111 222", address: "Riverside Drive, Westlands" },
+  "Kenya|Mombasa": { phone: "+254 712 222 333", address: "Moi Avenue, Mombasa Island" },
+  "Kenya|Kisumu": { phone: "+254 712 333 444", address: "Oginga Odinga Street" },
+  "Kenya|Nakuru": { phone: "+254 712 444 555", address: "Kenyatta Avenue" },
+  "South Africa|Johannesburg": { phone: "+27 71 111 2222", address: "34 Sandton Drive, Sandton" },
+  "South Africa|Cape Town": { phone: "+27 72 222 3333", address: "8 Kloof Street, Gardens" },
+  "South Africa|Durban": { phone: "+27 73 333 4444", address: "56 Florida Road, Morningside" },
+  "South Africa|Pretoria": { phone: "+27 74 444 5555", address: "12 Queens Crescent, Lynnwood" },
+  "Egypt|Cairo": { phone: "+20 100 123 4567", address: "22 Gezira Street, Zamalek" },
+  "Egypt|Alexandria": { phone: "+20 101 234 5678", address: "Corniche Road, Stanley" },
+  "Egypt|Giza": { phone: "+20 102 345 6789", address: "Pyramid Road, Haram" },
+  "Egypt|Sharm El Sheikh": { phone: "+20 103 456 7890", address: "Na'ama Bay, Hadaba" },
+  "Morocco|Casablanca": { phone: "+212 661 111 222", address: "Boulevard d'Anfa, Racine" },
+  "Morocco|Marrakech": { phone: "+212 662 222 333", address: "Avenue Mohammed V, Guéliz" },
+  "Morocco|Rabat": { phone: "+212 663 333 444", address: "Avenue Hassan II, Agdal" },
+  "Morocco|Fez": { phone: "+212 664 444 555", address: "Avenue Hassan II, Ville Nouvelle" },
+};
+
 const descriptionFor = (car) =>
   `${car.year} ${car.brand} ${car.model} in excellent condition, available in ${car.location}, ${car.country}. ` +
   `Well-maintained, full service history, comfortable ${car.seating_capacity}-seater ${car.category.toLowerCase()} ideal for city driving and longer trips.`;
@@ -140,6 +167,10 @@ async function run() {
       pricePerDay: listing.pricePerDay,
       country: listing.country,
       location: listing.location,
+      contact: CONTACTS[`${listing.country}|${listing.location}`] || {
+        phone: "+000 000 0000",
+        address: listing.location,
+      },
       description: descriptionFor(listing),
       isAvailable: true,
       isApproved: true,

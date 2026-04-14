@@ -28,6 +28,7 @@ const AddCar = () => {
     country: "",
     location: "",
     description: "",
+    contact: { phone: "", address: "" },
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +55,11 @@ const AddCar = () => {
         toast.error(`Please fill in ${label}`);
         return;
       }
+    }
+
+    if (!car.contact.phone.trim() || !car.contact.address.trim()) {
+      toast.error("Please fill in contact phone and street address");
+      return;
     }
 
     if (Number(car.year) <= 0 || Number(car.pricePerDay) <= 0 || Number(car.seating_capacity) <= 0) {
@@ -97,6 +103,7 @@ const AddCar = () => {
           country: "",
           location: "",
           description: "",
+          contact: { phone: "", address: "" },
         });
       } else {
         toast.error(data.message);
@@ -328,6 +335,52 @@ const AddCar = () => {
                   </option>
                 ))}
             </select>
+          </div>
+        </div>
+
+        {/* Host contact */}
+        <div className="flex flex-col gap-4 pt-2 border-t border-borderColor/60">
+          <div>
+            <p className="text-gray-700 font-medium">Host contact</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Renters see this once they book — make sure you pick up.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col w-full">
+              <label>Contact phone</label>
+              <input
+                type="tel"
+                required
+                placeholder="e.g. +234 803 123 4567"
+                value={car.contact.phone}
+                onChange={(e) =>
+                  setCar({
+                    ...car,
+                    contact: { ...car.contact, phone: e.target.value },
+                  })
+                }
+                className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              />
+            </div>
+
+            <div className="flex flex-col w-full">
+              <label>Street address</label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. 15 Admiralty Way, Lekki Phase 1"
+                value={car.contact.address}
+                onChange={(e) =>
+                  setCar({
+                    ...car,
+                    contact: { ...car.contact, address: e.target.value },
+                  })
+                }
+                className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              />
+            </div>
           </div>
         </div>
 

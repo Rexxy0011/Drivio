@@ -189,6 +189,42 @@ const CarDetails = () => {
                 </div>
               ))}
             </div>
+
+            {/* host contact */}
+            {(car.contact?.phone || car.contact?.address) && (
+              <div className="rounded-xl border border-borderColor/70 bg-white p-5">
+                <p className="text-xs uppercase tracking-[0.18em] text-gray-400">
+                  Host contact
+                </p>
+                <div className="mt-3 flex flex-col gap-2 text-sm text-gray-700">
+                  {car.owner?.name && (
+                    <div className="flex items-center gap-2">
+                      <img src={assets.users_icon} alt="" className="h-4" />
+                      <span>{car.owner.name}</span>
+                    </div>
+                  )}
+                  {car.contact?.phone && (
+                    <a
+                      href={`tel:${car.contact.phone.replace(/\s/g, "")}`}
+                      className="flex items-center gap-2 hover:text-primary"
+                    >
+                      <img src={assets.phone_icon || assets.check_icon} alt="" className="h-4" />
+                      <span>{car.contact.phone}</span>
+                    </a>
+                  )}
+                  {car.contact?.address && (
+                    <div className="flex items-start gap-2">
+                      <img src={assets.location_icon} alt="" className="h-4 mt-0.5" />
+                      <span>
+                        {car.contact.address}, {car.location}
+                        {car.country ? `, ${car.country}` : ""}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* description */}
             <div>
               <h1 className="text-xl font-medium mb-3">Description</h1>
@@ -216,7 +252,7 @@ const CarDetails = () => {
         </div>
 
         {/* Right: owner panel or booking form */}
-        {user && car.owner === user._id ? (
+        {user && (car.owner?._id || car.owner) === user._id ? (
           <div className="shadow-lg h-max sticky top-18 rounded-2xl p-6 space-y-5 bg-white border border-borderColor/60">
             <div>
               <p className="text-xs uppercase tracking-wider text-gray-400">

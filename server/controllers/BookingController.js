@@ -37,7 +37,7 @@ export const checkAvailabilityOfCar = async (req, res) => {
     if (country) query.country = country;
     if (location) query.location = location;
 
-    const cars = await Car.find(query);
+    const cars = await Car.find(query).populate("owner", "name");
 
     const availabilityChecks = cars.map(async (car) => {
       const isAvailable = await checkAvailability(

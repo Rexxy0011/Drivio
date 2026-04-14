@@ -72,7 +72,10 @@ export const getUserData = async (req, res) => {
 // get all cars for the front end (only approved + available listings)
 export const getCars = async (req, res) => {
   try {
-    const cars = await Car.find({ isAvailable: true, isApproved: true });
+    const cars = await Car.find({ isAvailable: true, isApproved: true }).populate(
+      "owner",
+      "name"
+    );
     res.json({ success: true, cars });
   } catch (error) {
     console.error(error.message);
