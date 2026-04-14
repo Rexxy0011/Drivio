@@ -113,15 +113,33 @@ const ManageCars = () => {
                   </td>
 
                   <td className="p-3 max-md:hidden">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs ${
-                        car.isAvailable
-                          ? "bg-green-100 text-green-500"
-                          : "bg-red-100 text-red-500"
-                      }`}
-                    >
-                      {car.isAvailable ? "Available" : "Unavailable"}
-                    </span>
+                    {car.rejectionReason ? (
+                      <span
+                        className="px-3 py-1 rounded-full text-xs bg-red-100 text-red-600"
+                        title={car.rejectionReason}
+                      >
+                        Rejected
+                      </span>
+                    ) : !car.isApproved ? (
+                      <span className="px-3 py-1 rounded-full text-xs bg-amber-100 text-amber-600">
+                        Pending review
+                      </span>
+                    ) : (
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs ${
+                          car.isAvailable
+                            ? "bg-green-100 text-green-600"
+                            : "bg-gray-100 text-gray-500"
+                        }`}
+                      >
+                        {car.isAvailable ? "Live" : "Hidden"}
+                      </span>
+                    )}
+                    {car.rejectionReason && (
+                      <p className="text-[11px] text-red-500 mt-1 max-w-52">
+                        {car.rejectionReason}
+                      </p>
+                    )}
                   </td>
 
                   <td className="flex items-center p-3">
