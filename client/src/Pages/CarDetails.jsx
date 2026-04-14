@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { assets } from "../assets/assets";
 import Loader from "../components/Loader";
+import CarImageSlider from "../components/CarImageSlider";
 import DateField, { startOfToday } from "../components/DateField";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
@@ -153,10 +154,8 @@ const CarDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         {/* left:car image & details */}
         <div className="lg:col-span-2">
-          <img
-            src={car.image}
-            alt=""
-            className="w-full h-auto md:max-h-100 object-cover rounded-xl mb-6 shadow-md"
+          <CarImageSlider
+            images={[car.image, ...(car.gallery || [])].filter(Boolean)}
           />
           <div className="space-y-6">
             <div>
@@ -176,7 +175,10 @@ const CarDetails = () => {
                 },
                 { icon: assets.fuel_icon, text: car.fuel_type },
                 { icon: assets.car_icon, text: car.transmission },
-                { icon: assets.location_icon, text: car.location },
+                {
+                  icon: assets.location_icon,
+                  text: car.country ? `${car.location}, ${car.country}` : car.location,
+                },
               ].map(({ icon, text }) => (
                 <div
                   key={text}
@@ -197,7 +199,7 @@ const CarDetails = () => {
               <h1 className="text-xl font-medium mb-3">Features</h1>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {[
-                  "30 Camera",
+                  "360 Camera",
                   "Bluetooth",
                   "GPS",
                   "Heated Seats",
@@ -213,7 +215,70 @@ const CarDetails = () => {
           </div>
         </div>
 
-        {/* Right: Booking Form  */}
+        {/* Right: owner panel or booking form */}
+        {user && car.owner === user._id ? (
+          <div className="shadow-lg h-max sticky top-18 rounded-2xl p-6 space-y-5 bg-white border border-borderColor/60">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-gray-400">
+                Your listing
+              </p>
+              <h2 className="text-xl font-semibold text-gray-800 mt-1">
+                This is your car
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm">
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  car.rejectionReason
+                    ? "bg-red-500"
+                    : !car.isApproved
+                    ? "bg-amber-500"
+                    : car.isAvailable
+                    ? "bg-green-500"
+                    : "bg-gray-400"
+                }`}
+              />
+              <span className="text-gray-700">
+                {car.rejectionReason
+                  ? "Rejected"
+                  : !car.isApproved
+                  ? "Pending review"
+                  : car.isAvailable
+                  ? "Live"
+                  : "Hidden"}
+              </span>
+            </div>
+
+            {!car.isApproved && !car.rejectionReason && (
+              <p className="text-sm text-gray-500">
+                Admin will approve once your documents are verified.
+              </p>
+            )}
+            {car.rejectionReason && (
+              <p className="text-sm text-red-500">
+                Reason: {car.rejectionReason}
+              </p>
+            )}
+
+            <div className="flex flex-col gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => navigate("/owner/manage-cars")}
+                className="w-full bg-primary hover:bg-primary-dull transition-all py-3 font-medium text-white rounded-xl cursor-pointer shadow-sm active:scale-[0.98]"
+              >
+                Manage listing
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/owner/manage-bookings")}
+                className="w-full border border-primary text-primary hover:bg-primary/5 transition-all py-3 font-medium rounded-xl cursor-pointer active:scale-[0.98]"
+              >
+                View bookings
+              </button>
+            </div>
+          </div>
+        ) : (
         <form
           onSubmit={handleSubmit}
           className="shadow-lg h-max sticky top-18 rounded-2xl p-6 space-y-6 text-gray-500 bg-white border border-borderColor/60"
@@ -278,6 +343,7 @@ const CarDetails = () => {
             No credit card required to reserve
           </p>
         </form>
+        )}
       </div>
     </div>
   ) : (
